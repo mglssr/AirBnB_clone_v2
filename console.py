@@ -128,13 +128,16 @@ class HBNBCommand(cmd.Cmd):
                     value = i.split("=")[1]
                     if hasattr(new_instance, key) is True:
                         value = value.replace("_", " ")
+                    if '.' in value:
+                        try:
+                            value = float(value)
+                        except Exception:
+                            pass
+                    else:
                         try:
                             value = int(value)
                         except Exception:
-                            try:
-                                value = float(value)
-                            except Exception:
-                                continue
+                            pass
                     setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
