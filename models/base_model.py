@@ -19,25 +19,19 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        if kwargs is not None and len(kwargs) != 0:
-            for key, value in kwargs.items():
-                if key == "id":
-                    self.id = value
-                elif key == "created_at":
-                    self.created_at = datetime.strptime(value,
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                elif key == "updated_at":
-                    self.updated_at = datetime.strptime(value,
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                elif key == "__class__":
-                    pass
-                else:
-                    setattr(self, key, value)
-        else:
+        if not kwargs:
+            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            del kwargs['__class__']
+            self.__dict__.update(kwargs)
+    
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
@@ -47,7 +41,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
-        models.storage.new(self) 
+        storage.new(self) 
         storage.save()
 
     def to_dict(self):
