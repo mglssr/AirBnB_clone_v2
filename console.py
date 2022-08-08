@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                     except Exception:
                         pass
                 else:
-                    try:
+                    try:    
                         value = int(value)
                     except Exception:
                         pass
