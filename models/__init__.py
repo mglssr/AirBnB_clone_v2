@@ -13,7 +13,7 @@ from models.review import Review
 if getenv("HBNB_TYPE_STORAGE", "fs") == "db":
     from models.engine import db_storage
     storage = db_storage.DBStorage()
-elsei:
+else:
     from models.engine import file_storage
     storage = file_storage.FileStorage()
 
