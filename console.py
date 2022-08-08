@@ -129,18 +129,11 @@ class HBNBCommand(cmd.Cmd):
                     value = i.split("=")[1]
                     if hasattr(new_instance, key) is True:
                         value = value.replace("_", " ")
-                        try:
-                            value = int(value)
-                        except Exception:
-                            try:
-                                value = float(value)
-                            except Exception:
-                                continue
                         setattr(new_instance, key, value)
                 except (ValueError, IndexError):
                     pass
-                new_instance.save()
-                print(new_instance.id)
+            new_instance.save()
+            print(new_instance.id)
         except Exception:
             print("** class doesn't exist **")
             return
