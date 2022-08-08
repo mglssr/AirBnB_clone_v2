@@ -39,7 +39,7 @@ class DBStorage:
         new_dict = {}
 
         for clas in classes:
-            if cls is None or cls = classes[clas]:
+            if cls is None or cls == classes[clas]:
                 objs = self.__session.query(models.classes[clas]).all()
                 for obj in objs:
                     key = type(obj).__name__ + '.' + obj.id
