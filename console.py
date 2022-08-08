@@ -124,12 +124,10 @@ class HBNBCommand(cmd.Cmd):
             args = shlex.split(args)
             new_instance = HBNBCommand.classes[args[0]]()
             for i in args[1:]:
-                try:
                     key = i.split("=")[0]
                     value = i.split("=")[1]
                     if hasattr(new_instance, key) is True:
                         value = value.replace("_", " ")
-                    else:
                         try:
                             value = int(value)
                         except Exception:
@@ -138,8 +136,6 @@ class HBNBCommand(cmd.Cmd):
                             except Exception:
                                 continue
                     setattr(new_instance, key, value)
-                except (ValueError, IndexError):
-                    pass
             new_instance.save()
             print(new_instance.id)
         except Exception:
