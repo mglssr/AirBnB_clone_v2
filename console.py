@@ -124,21 +124,21 @@ class HBNBCommand(cmd.Cmd):
             args = shlex.split(args)
             new_instance = HBNBCommand.classes[args[0]]()
             for i in args[1:]:
-                    key = i.split("=")[0]
-                    value = i.split("=")[1]
-                    if hasattr(new_instance, key) is True:
-                        value = value.replace("_", " ")
-                    if '.' in value:
-                        try:
-                            value = float(value)
-                        except Exception:
-                            pass
-                    else:
-                        try:
-                            value = int(value)
-                        except Exception:
-                            pass
-                    setattr(new_instance, key, value)
+                key = i.split("=")[0]
+                value = i.split("=")[1]
+                if hasattr(new_instance, key) is True:
+                    value = value.replace("_", " ")
+                if '.' in value:
+                    try:
+                        value = float(value)
+                    except Exception:
+                        pass
+                else:
+                    try:
+                        value = int(value)
+                    except Exception:
+                        pass
+                setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
         except Exception:
