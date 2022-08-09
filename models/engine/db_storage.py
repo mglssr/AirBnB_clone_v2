@@ -9,7 +9,7 @@ import models
 from models.state import State
 from models.city import City
 from models.base_model import Base
-
+from sqlalchemy.orm import Session
 
 class DBStorage:
     """
@@ -17,6 +17,7 @@ class DBStorage:
     """
     __engine = None
     __session = None
+
 
     def __init__(self):
         """
@@ -29,6 +30,8 @@ class DBStorage:
         envv = getenv("HBNB_ENV", "none")
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       user, pwd, host, db), pool_pre_ping=True)
+        Base.metadata.create_all(self.__engine)
+        
         if envv == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -36,16 +39,17 @@ class DBStorage:
         """
         query on the current database session
         """
-        new_dict = {}
-
-        for clas in classes:
-            if cls is None or cls == classes[clas]:
-                objs = self.__session.query(models.classes[clas]).all()
-                for obj in objs:
-                    key = type(obj).__name__ + '.' + obj.id
-                    new_dict[key] = obj
-        return new_dict
-
+        classes = [BaseModel, User, Place, State, City, Amenity, Review]
+        obj_dict = {}
+        if cls is not None:
+            for obj in self.__session.query(cls).all():
+                obj_dict[f"{cls}.{obj.id}"] = obj
+        else:
+            for clas in classes:
+                for obj in self.__session.query(clas).all():
+                    obj_dict[f"{clas}.{obj.id}"] = obj 
+        return obj_dict
+        
 
     def new(self, obj):
         """
@@ -57,7 +61,7 @@ class DBStorage:
         """
         commit all changes of the current database session
         """
-        self.__session.commmit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """
