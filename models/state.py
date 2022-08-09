@@ -2,7 +2,7 @@
 """ State Module for HBNB project """
 
 
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -19,4 +19,5 @@ class State(BaseModel, Base):
     def cities(self):
         """getter attribute cities that returns the
         list of City instances with state_id"""
-        return self.cities
+        if City.state_id == State.id:
+            return self.cities
