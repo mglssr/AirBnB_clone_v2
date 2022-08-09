@@ -6,6 +6,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from models.state import State
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
