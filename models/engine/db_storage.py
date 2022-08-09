@@ -8,7 +8,11 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import models
 from models.state import State
 from models.city import City
-from models.base_model import Base
+from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models.base_model import Base, BaseModel
 from sqlalchemy.orm import Session
 
 class DBStorage:
@@ -18,6 +22,11 @@ class DBStorage:
     __engine = None
     __session = None
 
+    classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
+              }
 
     def __init__(self):
         """
@@ -31,7 +40,7 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       user, pwd, host, db), pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
-        
+
         if envv == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -39,17 +48,16 @@ class DBStorage:
         """
         query on the current database session
         """
-        classes = [BaseModel, User, Place, State, City, Amenity, Review]
         obj_dict = {}
         if cls is not None:
             for obj in self.__session.query(cls).all():
-                obj_dict[f"{cls}.{obj.id}"] = obj
+			obj_dict[f"{cls}.{obj.id}"] = obj
         else:
-            for clas in classes:
+            for clas in DBStorage.classes.values():
                 for obj in self.__session.query(clas).all():
-                    obj_dict[f"{clas}.{obj.id}"] = obj 
+                        obj_dict[f"{type(obj).__name__}.{obj.id}"] = obj
         return obj_dict
-        
+
 
     def new(self, obj):
         """
@@ -78,3 +86,4 @@ class DBStorage:
         f = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(f)
         self.__session = Session()
+
