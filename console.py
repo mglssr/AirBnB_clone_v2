@@ -115,33 +115,32 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if len(args) == 0:
+        if not args:
             print("** class name missing **")
             return
-        try:
-            args = shlex.split(args)
-            new_instance = HBNBCommand.classes[args[0]]()
-            for i in args[1:]:
-                key = i.split("=")[0]
-                value = i.split("=")[1]
-                if hasattr(new_instance, key) is True:
-                    value = value.replace("_", " ")
-                if '.' in value:
-                    try:
-                        value = float(value)
-                    except Exception:
-                        pass
-                else:
-                    try:    
-                        value = int(value)
-                    except Exception:
-                        pass
-                setattr(new_instance, key, value)
-            new_instance.save()
-            print(new_instance.id)
-        except Exception:
+        if args.split()[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        args = shlex.split(args)
+        new_instance = HBNBCommand.classes[args[0]]()
+        for i in args[1:]:
+            key = i.split("=")[0]
+            value = i.split("=")[1]
+            if hasattr(new_instance, key) is True:
+                value = value.replace("_", " ")
+            if '.' in value:
+                try:
+                    value = float(value)
+                except Exception:
+                    pass
+            else:
+                try:    
+                    value = int(value)
+                except Exception:
+                    pass
+            setattr(new_instance, key, value)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -223,11 +222,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all():
                 print_list.append(str(v))
 
         print(print_list)
