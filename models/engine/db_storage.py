@@ -39,7 +39,6 @@ class DBStorage:
         envv = getenv("HBNB_ENV", "none")
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       user, pwd, host, db), pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
 
         if envv == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -82,7 +81,7 @@ class DBStorage:
         """
         reload
         """
-        self.__session = Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         f = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(f)
         self.__session = Session()
