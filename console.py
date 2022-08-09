@@ -12,6 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -134,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 except Exception:
                     pass
             else:
-                try:    
+                try:
                     value = int(value)
                 except Exception:
                     pass
@@ -223,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all(self.classes[args]).items():
-                    print_list.append(str(v))
+                print_list.append(str(v))
         else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
