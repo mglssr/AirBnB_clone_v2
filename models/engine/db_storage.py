@@ -51,11 +51,11 @@ class DBStorage:
         obj_dict = {}
         if cls is not None:
             for obj in self.__session.query(cls).all():
-			obj_dict[f"{cls}.{obj.id}"] = obj
+                obj_dict[f"{cls}.{obj.id}"] = obj
         else:
             for clas in DBStorage.classes.values():
                 for obj in self.__session.query(clas).all():
-                        obj_dict[f"{type(obj).__name__}.{obj.id}"] = obj
+                    obj_dict[f"{type(obj).__name__}.{obj.id}"] = obj
         return obj_dict
 
 
