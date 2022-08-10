@@ -15,6 +15,7 @@ from models.review import Review
 from models.base_model import Base, BaseModel
 from sqlalchemy.orm import Session
 
+
 class DBStorage:
     """
     Db
@@ -56,7 +57,6 @@ class DBStorage:
                 for obj in self.__session.query(clas).all():
                     obj_dict[f"{type(obj).__name__}.{obj.id}"] = obj
         return obj_dict
-
 
     def new(self, obj):
         """
