@@ -5,18 +5,21 @@ import models
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+from models.review import Review
 
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey("places.id"),
                              primary_key=True, nullable=False),
                       Column('amenity_id', String(60),
-                             ForeignKey("amenities.id"),
+                             ForeignKey('amenities.id'),
                              primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
-    """A place to stay"""
+    """
+    place
+    """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
@@ -28,37 +31,37 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    
+    amenity_ids = []
+
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship("Review", backref="place",
-                                cascade="all, delete, delete-orphan")
+        reviews = relationship("Review", cascade="all, delete-orphan",
+                               backref='place')
         amenities = relationship("Amenity", secondary=place_amenity,
-                                 viewonly=False, backref="place_amenities")
+                                 backref="places", viewonly=False)
     else:
         @property
         def reviews(self):
-            """reviews getter"""
-            list_review = []
-            for review in models.storage.all("Review").value():
-                if review.state_id == self.id:
-                    list_review.append(review)
-            return list_review
+            """
+            reviews
+            """
+            reviewsList = []
+            for review in models.storage.all(Review).values():
+                if self.id == review.place_id:
+                    reviewsList.append(models.storage.all(Review)[review])
+            return reviewsList
 
         @property
         def amenities(self):
             """
-            amenities getter
+            amenities
             """
-            list_amenities = []
+            amenityList = []
             for amenity in models.storage.all(Amenity).values():
-                if amenity.place_id == self.id:
-                    amenity_list.append(amenity)
-            return list_amenities
+                if self.id == amenity.place_id:
+                    amenityList.append(models.storage.all(Amenity)[amenity])
+            return amenityList
 
         @amenities.setter
-        def amenities(self, amenity=None):
-            if amenity:
-                 for amenity in models.storage.all(Amenity).values():
-                     if amenity.place_id == self.id:
-                         amenity_ids.append(amenity)
-
+        def amenities(self, amenity_object):
+            if type(amenity_object).__name__ == "Amenity":
+                self.amenity_ids.append(amenity_object.id)
