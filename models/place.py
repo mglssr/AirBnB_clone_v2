@@ -11,7 +11,7 @@ metadata = Base.metadata
 place_amenity = Table('place_amenities', metadata, Column("place_id", String(60), ForeignKey("places.id"), primary_key=True, nullable=False), Column("amenity_id", String(60), ForeignKey("amenities.id"), primary_key=True, nullable=False))
 
 class Place(BaseModel, Base):
-    """ A place to stay """
+    """A place to stay"""
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
