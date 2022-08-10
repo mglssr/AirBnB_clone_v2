@@ -68,8 +68,10 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         if hasattr(self, "_sa_instance_state"):
             del dictionary["_sa_instance_state"]
+            """
         if hasattr(self, "__class__"):
             del dictionary["__class__"]
+            """
         return dictionary
 
     def delete(self):
