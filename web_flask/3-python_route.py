@@ -26,8 +26,8 @@ def c_(txt):
     return "C {}".format(txt)
 
 
-@app.route("/Python/(<txt>)", strict_slashes=False)
-def c_(txt):
+@app.route("/python/(<txt>)", strict_slashes=False)
+def python_(txt):
     """generic comment"""
     if not txt:
         txt = "is cool"
