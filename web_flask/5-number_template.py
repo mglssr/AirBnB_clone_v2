@@ -2,7 +2,7 @@
 """Write a script that starts a Flask web application"""
 
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -40,9 +40,8 @@ def number(my_num):
     return "{} is a number".format(my_num)
 
 
-@app.route("/number_template/<int: my_num>", strict_slashes=False)
+@app.route("/number_template/<int:my_num>", strict_slashes=False)
 def my_number(my_num):
-    from flask import render_template
     """generic comment"""
     return render_template('5-number.html', num=my_num)
 
