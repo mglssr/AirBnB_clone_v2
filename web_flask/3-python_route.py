@@ -26,6 +26,7 @@ def c_(txt):
     return "C {}".format(txt)
 
 
+@app.route("/python", strict_slashes=False)
 @app.route("/python/(<txt>)", strict_slashes=False)
 def python_(txt):
     """generic comment"""
