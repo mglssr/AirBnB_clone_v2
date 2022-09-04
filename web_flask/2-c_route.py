@@ -19,7 +19,7 @@ def hbnb():
     return "HBNB"
 
 
-@app.rpute("/c/<text_>", strict_slashes=False)
+@app.rpute("/c/<txt>", strict_slashes=False)
 def c_(txt):
     """generic comment"""
     txt = txt.replace("_", " ")
