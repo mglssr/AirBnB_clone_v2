@@ -49,6 +49,10 @@ def my_number(my_num):
 @app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
 def odd_or_even(n):
     """generic comment"""
+    if (n % 2) == 0:
+        som = "even"
+    else:
+        som = "odd"
     return render_template('6-number.html', num=n)
 
 
