@@ -27,7 +27,7 @@ def c_(txt):
 
 
 @app.route("/python", strict_slashes=False)
-@app.route("/python/(<txt>)", strict_slashes=False)
+@app.route("/python/<txt>", strict_slashes=False)
 def python_(txt="is cool"):
     """generic comment"""
     txt = txt.replace("_", " ")
