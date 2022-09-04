@@ -23,7 +23,7 @@ def hbnb():
 def c_(txt):
     """generic comment"""
     txt = txt.replace("_", " ")
-    return f"C {txt}"
+    return "C {}".format(txt)
 
 
 if __name__ == '__main__':
