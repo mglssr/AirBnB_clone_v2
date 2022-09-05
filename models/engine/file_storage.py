@@ -17,7 +17,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """lmao"""
-        
+
         if cls is None:
             return FileStorage.__objects
         else:
@@ -43,7 +43,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-      
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
