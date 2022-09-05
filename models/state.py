@@ -21,13 +21,13 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """getter attribute cities that returns the
-        list of City instances with state_id"""
-        list_cities = []
-        list_obj = models.storage.all(City)
-        for city in list_obj.values():
-            if city.state_id == self.id:
-                list_cities.append(city)
-        return list_cities
+        @property
+        def cities(self):
+            """getter attribute cities that returns the
+            list of City instances with state_id"""
+            list_cities = []
+            list_obj = models.storage.all(City)
+            for city in list_obj.values():
+                if city.state_id == self.id:
+                    list_cities.append(city)
+            return list_cities
