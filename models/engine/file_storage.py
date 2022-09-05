@@ -8,6 +8,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import os
 
 
 class FileStorage:
@@ -42,21 +43,14 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
+        """Deserializes the JSON file to __objects (only if the JSON file
+        (__file_path) exists; otherwise, do nothing.
+        If the file doesn’t exist, no exception should be raised)"""
+        if os.path.isfile(self.__file_path):
+            with open(self.__file_path) as f:
+                objts = json.load(f)
+                for key, value in objts.items():
+                    self.new(eval(value['__class__'])(**value))
 
     def delete(self, obj=None):
         """

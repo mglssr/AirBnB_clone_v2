@@ -41,10 +41,9 @@ class BaseModel:
             self.updated_at = datetime.now()
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        dict = self.to_dict()
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, dict)
+        """Returns the string representation of the model"""
+        return "[{}] ({}) {}".format(
+                self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
