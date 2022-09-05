@@ -22,10 +22,10 @@ class FileStorage:
             return FileStorage.__objects
         else:
             new_dict = {}
-            for key, value in FileStorage.__objects.items():
-                cls_name = key.split(".")[0]
+            for key in FileStorage.__objects:
+                cls_name, cls_id = key.split(".")
                 if cls.__name__ == cls_name:
-                    new_dict[key] = value
+                    new_dict[key] = FileStorage.__objects[key]
         return new_dict
 
     def new(self, obj):
